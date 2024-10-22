@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require("dotenv").config();
 
 
 const app = express();
@@ -13,7 +14,7 @@ app.use(cors({
 }));
 
 // Connect to MongoDB database
-const mongoDbUrl = "mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/kezeo_webhook?retryWrites=true&w=majority&appName=Cluster0"
+const mongoDbUrl = process.env.MONGO_DB_URL;
 
 // MongoDB connection
 mongoose.connect(mongoDbUrl, {
