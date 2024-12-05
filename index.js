@@ -8,7 +8,8 @@ const app = express();
 const PORT = 4000;
 
 // Middleware to parse JSON bodies
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));  // Set limit as needed
+
 app.use(cors({
     origin: "*", // Allows requests from any origin
 }));
@@ -59,6 +60,8 @@ app.get('/webhook-data', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 // Start the server
 app.listen(PORT, () => {
