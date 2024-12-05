@@ -25,7 +25,7 @@ mongoose.connect(mongoDbUrl)
 
 // Define a Mongoose schema with a flexible structure
 const webhookSchema = new mongoose.Schema({
-    payload: { type: Object, required: true }, // Store the entire request body
+    payload: { type: Object, required: true },  // Store the entire request body
     createdAt: { type: Date, default: Date.now },
 });
 
@@ -37,9 +37,9 @@ app.post('/webhook', async (req, res) => {
     const eventData = req.body;
 
     try {
-        // Store the entire request body as a payload
+        // Always create a new document with the incoming payload
         const newWebhook = new Webhook({
-            payload: eventData, // Save everything from req.body
+            payload: eventData, // Save the entire request body
         });
 
         await newWebhook.save();
@@ -60,8 +60,6 @@ app.get('/webhook-data', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
-
 
 // Start the server
 app.listen(PORT, () => {
