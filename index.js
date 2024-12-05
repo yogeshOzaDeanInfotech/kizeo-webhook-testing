@@ -37,8 +37,11 @@ const Webhook = mongoose.model('Webhook', webhookSchema);
 app.post('/webhook', async (req, res) => {
     const eventData = req.body;
 
+    console.log('Received Webhook Data:', eventData); // Log the incoming request payload
+
     try {
         const incidentNumber = eventData.incidentNumber; // Assuming `incidentNumber` is part of the payload
+        console.log('Extracted Incident Number:', incidentNumber);
 
         if (!incidentNumber) {
             return res.status(400).send('Incident Number is required in the payload');
@@ -46,6 +49,7 @@ app.post('/webhook', async (req, res) => {
 
         // Check if the record with the same incident number exists
         const existingWebhook = await Webhook.findOne({ incidentNumber });
+        console.log('Existing Webhook:', existingWebhook); // Log if a matching webhook is found
 
         if (existingWebhook) {
             // Update the existing record with the new payload
@@ -53,6 +57,7 @@ app.post('/webhook', async (req, res) => {
             existingWebhook.createdAt = Date.now();  // Update the creation time
 
             await existingWebhook.save();
+            console.log('Webhook Data Updated:', existingWebhook);
             return res.status(200).send({ message: 'Webhook data updated successfully' });
         }
 
@@ -63,6 +68,7 @@ app.post('/webhook', async (req, res) => {
         });
 
         await newWebhook.save();
+        console.log('New Webhook Data Saved:', newWebhook);
         res.status(200).send({ message: 'Webhook data saved successfully' });
     } catch (error) {
         console.error('Error processing webhook:', error);
@@ -74,6 +80,7 @@ app.post('/webhook', async (req, res) => {
 app.get('/webhook-data', async (req, res) => {
     try {
         const webhooks = await Webhook.find();
+        console.log('Retrieved Webhook Data:', webhooks); // Log the retrieved data
         res.status(200).send(webhooks);
     } catch (error) {
         console.error('Error retrieving webhooks:', error);
