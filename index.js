@@ -25,6 +25,7 @@ mongoose.connect(mongoDbUrl)
 
 // Define a Mongoose schema with a flexible structure
 const webhookSchema = new mongoose.Schema({
+    incidentNumber: { type: String, required: true },
     payload: { type: Object, required: true },  // Store the entire request body
     createdAt: { type: Date, default: Date.now },
 });
@@ -37,9 +38,28 @@ app.post('/webhook', async (req, res) => {
     const eventData = req.body;
 
     try {
-        // Always create a new document with the incoming payload
+        const incidentNumber = eventData.incidentNumber; // Assuming `incidentNumber` is part of the payload
+
+        if (!incidentNumber) {
+            return res.status(400).send('Incident Number is required in the payload');
+        }
+
+        // Check if the record with the same incident number exists
+        const existingWebhook = await Webhook.findOne({ incidentNumber });
+
+        if (existingWebhook) {
+            // Update the existing record with the new payload
+            existingWebhook.payload = eventData;
+            existingWebhook.createdAt = Date.now();  // Update the creation time
+
+            await existingWebhook.save();
+            return res.status(200).send({ message: 'Webhook data updated successfully' });
+        }
+
+        // If no existing record, create a new one
         const newWebhook = new Webhook({
-            payload: eventData, // Save the entire request body
+            incidentNumber,
+            payload: eventData,
         });
 
         await newWebhook.save();
