@@ -51,16 +51,15 @@ app.post('/webhook', async (req, res) => {
         // Check if the record with the same incident number exists
         const existingWebhook = await Webhook.findOne({ incidentNumber });
         console.log('Existing Webhook:', existingWebhook); // Log if a matching webhook is found
+        console.log('Existing Webhook:',eventData.data?.sub_task_number); // Log if a matching webhook is found
 
         if (existingWebhook) {
             // If we have sub_task data, update the existing incident record with subtask details
-            if (eventData.data && eventData.data.sub_task_number) {
+            if (eventData.data && eventData.data?.sub_task_number) {
                 console.log('Subtask received, adding to incident details...');
                 
                 // Add the subtask data to the existing incident record
-                existingWebhook.sub_task_details = eventData; // Add subtask details to the existing incident object
-
-                // Update the existing record with the new payload and subtask details
+                existingWebhook.sub_task_details = eventData;
                 existingWebhook.createdAt = Date.now(); // Update the creation time
 
                 await existingWebhook.save();
