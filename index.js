@@ -28,6 +28,7 @@ const webhookSchema = new mongoose.Schema({
     incidentNumber: { type: String, required: true },
     payload: { type: Object, required: true },  // Store the entire request body
     createdAt: { type: Date, default: Date.now },
+    sub_task_details: { type: Object } // New field to store subtask details
 });
 
 // Create a model
@@ -52,19 +53,36 @@ app.post('/webhook', async (req, res) => {
         console.log('Existing Webhook:', existingWebhook); // Log if a matching webhook is found
 
         if (existingWebhook) {
-            // Update the existing record with the new payload
-            existingWebhook.payload = eventData;
-            existingWebhook.createdAt = Date.now();  // Update the creation time
+            // If we have sub_task data, update the existing incident record with subtask details
+            if (eventData.data && eventData.data.sub_task_number) {
+                console.log('Subtask received, adding to incident details...');
+                
+                // Add the subtask data to the existing incident record
+                existingWebhook.sub_task_details = eventData; // Add subtask details to the existing incident object
 
-            await existingWebhook.save();
-            console.log('Webhook Data Updated:', existingWebhook);
-            return res.status(200).send({ message: 'Webhook data updated successfully' });
+                // Update the existing record with the new payload and subtask details
+                existingWebhook.payload = eventData; // Update the incident with new event data
+                existingWebhook.createdAt = Date.now(); // Update the creation time
+
+                await existingWebhook.save();
+                console.log('Webhook Data Updated with Subtask:', existingWebhook);
+                return res.status(200).send({ message: 'Webhook data updated successfully with subtask' });
+            } else {
+                // If no sub_task data, treat it as an incident update
+                existingWebhook.payload = eventData;
+                existingWebhook.createdAt = Date.now(); // Update the creation time
+
+                await existingWebhook.save();
+                console.log('Webhook Data Updated:', existingWebhook);
+                return res.status(200).send({ message: 'Webhook data updated successfully' });
+            }
         }
 
         // If no existing record, create a new one
         const newWebhook = new Webhook({
             incidentNumber,
             payload: eventData,
+            sub_task_details: eventData.data && eventData.data.sub_task_number ? eventData : null, // Add subtask details if available
         });
 
         await newWebhook.save();
