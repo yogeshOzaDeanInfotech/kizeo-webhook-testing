@@ -38,12 +38,13 @@ const Webhook = mongoose.model('Webhook', webhookSchema);
 app.post('/webhook', async (req, res) => {
     const eventData = req.body;
 
-    console.log('Received Webhook Data:', eventData); // Log the incoming request payload
+    console.log('Received Webhook Data:', eventData);
 
     try {
-        const incidentNumber = eventData.data?.number || eventData.number; // Adjust depending on payload structure
+        const incidentNumber = eventData.data?.number || eventData.number;
+        const subTaskNumber = eventData.sub_task_number;
         console.log('Extracted Incident Number:', incidentNumber);
-        console.log('sub_task_number:',eventData.sub_task_number); // Log if a matching webhook is found
+        console.log('sub_task_number:',subTaskNumber);
 
         if (!incidentNumber) {
             return res.status(400).send('Incident Number is required in the payload');
@@ -55,13 +56,10 @@ app.post('/webhook', async (req, res) => {
 
 
         if (existingWebhook) {
-            // If we have sub_task data, update the existing incident record with subtask details
-            if (eventData.data && eventData.sub_task_number) {
+            if (eventData.data || subTaskNumber) {
                 console.log('Subtask received, adding to incident details...');
-                
-                // Add the subtask data to the existing incident record
                 existingWebhook.sub_task_details = eventData;
-                existingWebhook.createdAt = Date.now(); // Update the creation time
+                existingWebhook.createdAt = Date.now(); 
 
                 await existingWebhook.save();
                 console.log('Webhook Data Updated with Subtask:', existingWebhook);
@@ -69,7 +67,7 @@ app.post('/webhook', async (req, res) => {
             } else {
                 // If no sub_task data, treat it as an incident update
                 existingWebhook.payload = eventData;
-                existingWebhook.createdAt = Date.now(); // Update the creation time
+                existingWebhook.createdAt = Date.now();
 
                 await existingWebhook.save();
                 console.log('Webhook Data Updated:', existingWebhook);
