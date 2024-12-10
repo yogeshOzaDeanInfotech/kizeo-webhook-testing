@@ -17,7 +17,7 @@ app.use(cors({
 app.use(morgan('combined'));
 
 // Connect to MongoDB database
-const mongoDbUrl = process.env.MONGO_DB_URL || "mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/kezeo_webhook?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDbUrl = process.env.MONGO_DB_URL || "mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/hughes?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(mongoDbUrl)
     .then(() => console.log('Connected to MongoDB'))
@@ -79,7 +79,7 @@ app.post('/webhook', async (req, res) => {
         const newWebhook = new Webhook({
             incidentNumber,
             payload: eventData,
-            sub_task_details: eventData.data && eventData.data.sub_task_number ? eventData : null, // Add subtask details if available
+            sub_task_details: eventData.data && eventData.data.sub_task_number ? eventData : null,
         });
 
         await newWebhook.save();
@@ -91,11 +91,10 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-// GET API to retrieve all data collected by webhook
 app.get('/webhook-data', async (req, res) => {
     try {
         const webhooks = await Webhook.find();
-        console.log('Retrieved Webhook Data:', webhooks); // Log the retrieved data
+        console.log('Retrieved Webhook Data:', webhooks);
         res.status(200).send(webhooks);
     } catch (error) {
         console.error('Error retrieving webhooks:', error);
