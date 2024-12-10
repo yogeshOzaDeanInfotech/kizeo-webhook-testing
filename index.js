@@ -61,7 +61,6 @@ app.post('/webhook', async (req, res) => {
                 existingWebhook.sub_task_details = eventData; // Add subtask details to the existing incident object
 
                 // Update the existing record with the new payload and subtask details
-                existingWebhook.payload = eventData; // Update the incident with new event data
                 existingWebhook.createdAt = Date.now(); // Update the creation time
 
                 await existingWebhook.save();
