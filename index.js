@@ -40,7 +40,7 @@ app.post('/webhook', async (req, res) => {
     console.log('Received Webhook Data:', eventData); // Log the incoming request payload
 
     try {
-        const incidentNumber = eventData.data.number; // Assuming `incidentNumber` is part of the payload
+        const incidentNumber = eventData.data?.number || eventData.number; // Adjust depending on payload structure
         console.log('Extracted Incident Number:', incidentNumber);
 
         if (!incidentNumber) {
