@@ -43,19 +43,20 @@ app.post('/webhook', async (req, res) => {
     try {
         const incidentNumber = eventData.data?.number || eventData.number; // Adjust depending on payload structure
         console.log('Extracted Incident Number:', incidentNumber);
+        console.log('sub_task_number:',eventData.sub_task_number); // Log if a matching webhook is found
 
         if (!incidentNumber) {
             return res.status(400).send('Incident Number is required in the payload');
         }
+        
 
         // Check if the record with the same incident number exists
         const existingWebhook = await Webhook.findOne({ incidentNumber });
-        console.log('Existing Webhook:', existingWebhook); // Log if a matching webhook is found
-        console.log('Existing Webhook:',eventData.data?.sub_task_number); // Log if a matching webhook is found
+
 
         if (existingWebhook) {
             // If we have sub_task data, update the existing incident record with subtask details
-            if (eventData.data && eventData.data?.sub_task_number) {
+            if (eventData.data && eventData.sub_task_number) {
                 console.log('Subtask received, adding to incident details...');
                 
                 // Add the subtask data to the existing incident record
