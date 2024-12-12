@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require("dotenv").config();
 const morgan = require('morgan');
+const axios = require('axios');
+const fs = require('fs');
+const FormData = require('form-data');
 
 const app = express();
 const PORT = 4000;
@@ -18,6 +21,11 @@ app.use(morgan('combined'));
 
 // Connect to MongoDB database
 const mongoDbUrl ="mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/hughes?retryWrites=true&w=majority&appName=Cluster0";
+
+// ServiceNow API credentials and URL
+const SERVICE_NOW_URL = 'https://hnseutest.service-now.com/api/now/attachment/file?table_name=incident&table_sys_id=aab388431bd2d210a828a792b24bcb1a&file_name=yogesh.pdf';
+const SERVICE_NOW_USER = 'n.gradwell@hugheseurope.com';
+const SERVICE_NOW_PASS = '0}4+9Dub-a';
 
 mongoose.connect(mongoDbUrl)
     .then(() => console.log('Connected to MongoDB'))
@@ -124,6 +132,72 @@ app.post('/dynamic-webhook', async (req, res) => {
 
         await dynamicRecord.save();
         console.log('Dynamic Data Saved:', dynamicRecord);
+
+        // send data into pdf in service now 
+
+        // Step 1: Extract relevant fields from the received data
+        const fields = requestData.data.fields;
+        const customerProject = fields.customer_project2?.result?.value?.code || 'N/A';
+        const engineerNames = fields.engineer_names?.result?.map((engineer) => engineer.value?.code).join(', ') || 'N/A';
+        const siteAddress = fields.site_address?.result?.value?.address || 'N/A';
+        const siteCity = fields.site_address?.result?.value?.city || 'N/A';
+        const siteCountry = fields.site_address?.result?.value?.country || 'N/A';
+        const subtaskNumber = fields.subtask_number?.result?.value || 'N/A';
+        const descriptionOfWork = fields.description_of_work?.result?.value || 'N/A';
+        const arrivalTime = fields.arrival_time?.result?.value?.hour || 'N/A';
+        const departureTime = fields.departure_time?.result?.value?.hour || 'N/A';
+
+        // Step 2: Create a PDF document
+        const doc = new PDFDocument();
+        const pdfPath = path.join(__dirname, 'generatedFile.pdf');
+        doc.pipe(fs.createWriteStream(pdfPath));
+
+        doc.fontSize(16).text('Dynamic Webhook Data', { align: 'center' });
+
+        doc.moveDown();
+        doc.fontSize(12).text(`Customer Project: ${customerProject}`);
+        doc.text(`Engineer Names: ${engineerNames}`);
+        doc.text(`Site Address: ${siteAddress}`);
+        doc.text(`City: ${siteCity}`);
+        doc.text(`Country: ${siteCountry}`);
+        doc.text(`Subtask Number: ${subtaskNumber}`);
+        doc.text(`Description of Work: ${descriptionOfWork}`);
+        doc.text(`Arrival Time: ${arrivalTime}`);
+        doc.text(`Departure Time: ${departureTime}`);
+
+        doc.end();
+
+        // Step 3: Upload the PDF to ServiceNow
+
+        // Read the generated PDF file
+        const fileContent = fs.readFileSync(pdfPath);
+
+        // Prepare the form data for the file upload
+        const formData = new FormData();
+        formData.append('file', fileContent, 'generatedFile.pdf');
+
+        // Parameters for the URL
+        const params = {
+            table_name: 'incident',
+            table_sys_id: '90b509cf1b96d210a828a792b24bcb71',
+            file_name: 'generatedFile.pdf'
+        };
+
+        // Configure the API request to ServiceNow
+        const response = await axios.post(
+            'https://hnseutest.service-now.com/api/now/attachment/file',
+            formData,
+            {
+                headers: {
+                    'Authorization': `Basic ${Buffer.from(`${SERVICE_NOW_USER}:${SERVICE_NOW_PASS}`).toString('base64')}`,
+                    'Content-Type': 'multipart/form-data'
+                },
+                params: params
+            }
+        );
+
+        console.log('ServiceNow Response:', response.data);
+       // end
 
         res.status(200).send({ message: 'Dynamic data saved successfully', record: dynamicRecord });
     } catch (error) {
