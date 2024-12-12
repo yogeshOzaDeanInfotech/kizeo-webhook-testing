@@ -17,7 +17,7 @@ app.use(cors({
 app.use(morgan('combined'));
 
 // Connect to MongoDB database
-const mongoDbUrl = process.env.MONGO_DB_URL || "mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/hughes?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDbUrl ="mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/hughes?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(mongoDbUrl)
     .then(() => console.log('Connected to MongoDB'))
@@ -30,6 +30,15 @@ const webhookSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     sub_task_details: { type: Object } // New field to store subtask details
 });
+
+// Define a flexible schema for dynamic data
+const dynamicDataSchema = new mongoose.Schema({
+    data: { type: mongoose.Schema.Types.Mixed, required: true }, // Store any type of data
+    createdAt: { type: Date, default: Date.now },
+});
+
+// Create a model for dynamic data
+const DynamicData = mongoose.model('DynamicData', dynamicDataSchema);
 
 // Create a model
 const Webhook = mongoose.model('Webhook', webhookSchema);
@@ -99,6 +108,40 @@ app.get('/webhook-data', async (req, res) => {
     } catch (error) {
         console.error('Error retrieving webhooks:', error);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/dynamic-webhook', async (req, res) => {
+    const requestData = req.body;
+
+    console.log('Received Dynamic Data:', requestData);
+
+    try {
+        // Save the incoming data into the DynamicData collection
+        const dynamicRecord = new DynamicData({
+            data: requestData,
+        });
+
+        await dynamicRecord.save();
+        console.log('Dynamic Data Saved:', dynamicRecord);
+
+        res.status(200).send({ message: 'Dynamic data saved successfully', record: dynamicRecord });
+    } catch (error) {
+        console.error('Error saving dynamic data:', error);
+        res.status(500).send({ message: 'Internal Server Error', error });
+    }
+});
+
+
+// Endpoint to retrieve all dynamic data
+app.get('/dynamic-webhook', async (req, res) => {
+    try {
+        const records = await DynamicData.find();
+        console.log('Retrieved Dynamic Data:', records);
+        res.status(200).send(records);
+    } catch (error) {
+        console.error('Error retrieving dynamic data:', error);
+        res.status(500).send({ message: 'Internal Server Error', error });
     }
 });
 
