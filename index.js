@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const axios = require('axios');
 const fs = require('fs');
 const FormData = require('form-data');
+const PDFDocument = require('pdfkit');
+const path = require('path');
 
 const app = express();
 const PORT = 4000;
@@ -22,8 +24,7 @@ app.use(morgan('combined'));
 // Connect to MongoDB database
 const mongoDbUrl ="mongodb+srv://yogeshoza33333:xgMYHTyzNEggqxYC@cluster0.pwjc7nq.mongodb.net/hughes?retryWrites=true&w=majority&appName=Cluster0";
 
-// ServiceNow API credentials and URL
-const SERVICE_NOW_URL = 'https://hnseutest.service-now.com/api/now/attachment/file?table_name=incident&table_sys_id=aab388431bd2d210a828a792b24bcb1a&file_name=yogesh.pdf';
+// ServiceNow API credentials
 const SERVICE_NOW_USER = 'n.gradwell@hugheseurope.com';
 const SERVICE_NOW_PASS = '0}4+9Dub-a';
 
@@ -149,7 +150,14 @@ app.post('/dynamic-webhook', async (req, res) => {
 
         // Step 2: Create a PDF document
         const doc = new PDFDocument();
-        const pdfPath = path.join(__dirname, 'generatedFile.pdf');
+
+        // Ensure the directory exists before writing the PDF
+        const pdfDir = path.join(__dirname, 'generated_pdfs');
+        if (!fs.existsSync(pdfDir)) {
+            fs.mkdirSync(pdfDir, { recursive: true });  // Create the directory if it doesn't exist
+        }
+
+        const pdfPath = path.join(pdfDir, 'generatedFile.pdf');
         doc.pipe(fs.createWriteStream(pdfPath));
 
         doc.fontSize(16).text('Dynamic Webhook Data', { align: 'center' });
