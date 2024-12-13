@@ -243,7 +243,7 @@ function getBase64Image(filePath) {
 async function generatePDF(data) {
     try { 
         // Read the HTML template
-        const templateHtml = fs.readFileSync(path.join(__dirname, "Risk_Assesment2.html"), "utf8");
+        const templateHtml = fs.readFileSync(path.join(__dirname, "tem.html"), "utf8");
 
         // Compile the template with Handlebars
         const template = Handlebars.compile(templateHtml);
@@ -273,7 +273,7 @@ async function generatePDF(data) {
 
 // Dynamic data with multiple attachments
 const data = {
-    filename :"SUB421452-JOB_SHEET.pdf",
+    filename :"SUB421452_JOB_SHEET.pdf",
     logoBase64: getBase64Image(path.resolve(__dirname, "hughes_logo.png")),
     customerName: "Yogesh",
     engineerName: "Chris White",
