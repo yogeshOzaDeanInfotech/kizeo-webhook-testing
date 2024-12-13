@@ -10,12 +10,16 @@
             margin: 20px;
             padding: 0;
         }
+        h1{
+            color: #4a4a4a;
+            font-weight: 400;
+        }
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
         .header img {
-            width: 150px;
+            width: 80%;
         }
         .section {
             border: 1px solid #000;
@@ -24,7 +28,6 @@
         }
         .title {
             font-weight: bold;
-            text-transform: uppercase;
             margin-bottom: 5px;
         }
         .grid {
@@ -51,6 +54,7 @@
         }
         .page-break {
             page-break-before: always;
+            margin-top: 5%;
         }
         .signature-section {
             margin-top: 20px;
@@ -63,61 +67,74 @@
             height: auto;
             margin-top: 10px;
         }
+        @page {
+            margin: 20mm;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
     <!-- Page 1 -->
     <div class="header">
-        <img src="{{logo}}" alt="Hughes Europe">
-        <h1>Job Sheet</h1>
+        <!-- <img src="./hughes_logo.png" alt="Hughes Europe"> -->
+        <img src="{{logoBase64}}" alt="Hughes Europe">
+        <h1>JOB SHEET</h1>
     </div>
 
     <div class="grid">
         <div class="section">
             <div class="title">Customer Details/Contract</div>
             <p>{{customerName}}</p>
-            <p><strong>Engineer Name/s:</strong> {{engineerName}}</p>
-            <p><strong>LAT/LONG:</strong> {{latLong}}</p>
+            <p><strong>Engineer Name/s:</strong> </p>
+            <p>{{engineerName}}</p>
+            <p><strong>LAT/LONG:</strong></p>
+            <p>{{latLong}}</p>
         </div>
         <div class="section">
             <div class="title">Site Details/Address</div>
             <p>{{siteAddress}}</p>
         </div>
     </div>
-
-    <div class="section">
-        <div class="title">Job Details</div>
+<hr />
+    <div>
         <table>
+                <th>Job Details</th>
             <tr>
-                <th>Site Code</th>
-                <th>Job Type</th>
-                <th>SAN</th>
-                <th>Order Number</th>
+                <td>Site Code:{{siteCode}}</td>
+                <td>Job Type:{{jobType}}</td>
+                <td>SAN:{{san}}</td>
             </tr>
             <tr>
-                <td>{{siteCode}}</td>
-                <td>{{jobType}}</td>
-                <td>{{san}}</td>
-                <td>{{orderNumber}}</td>
+                <td>Order Number: {{orderNumber}}</td>
+                <td>Arrival Time: {{arrivalTime}}</td>
+                <td>SJN:{{sjn}}</td>
             </tr>
             <tr>
-                <th>Arrival Time</th>
-                <th>SJN</th>
-                <th>Access Equipment</th>
-                <th>Departure Time</th>
-            </tr>
-            <tr>
-                <td>{{arrivalTime}}</td>
-                <td>{{sjn}}</td>
-                <td>{{accessEquipment}}</td>
-                <td>{{departureTime}}</td>
+                <td>Access Equipment: {{accessEquipment}}</td>
+                <td>Departure Time: {{departureTime}}</td>
+                <td>SUB: {{sub}}</td>
             </tr>
         </table>
     </div>
 
-    <div class="description">
-        <strong>Description Of Work:</strong>
-        <p>{{description}}</p>
+    <div style="margin-top: 7%;">
+        <table>
+            <th>
+                Description Of Work:
+            </th>
+            <tr>
+                <td>
+                    {{description}}
+                </td>
+            </tr>
+        </table>
     </div>
 
     <!-- Page 2 -->
@@ -149,24 +166,37 @@
     <div class="signature-section">
         <div class="title">Customer Signature</div>
         <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Signature</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
             <tr>
-                <td><strong>Name:</strong> {{customerSignature.name}}</td>
-                <td><strong>Position:</strong> {{customerSignature.position}}</td>
-                <td><strong>Signature:</strong> <img src="{{customerSignature.signature}}" alt="Signature" style="height: 30px;"></td>
-                <td><strong>Date:</strong> {{customerSignature.date}}</td>
+                <td>{{customerSignature.name}}</td>
+                <td>{{customerSignature.position}}</td>
+                <td><img src="{{customerSignature.signature}}" alt="Signature" style="height: 30px;"></td>
+                <td>{{customerSignature.date}}</td>
             </tr>
+        </tbody>
         </table>
     </div>
 
-    <div class="attachments">
-        <div class="title">Attachments Below</div>
+        <hr />
+    
+    <div class="attachments" style="display: flex; flex-direction: column;">
+        <div class="title" style="margin-top: 20%;">Attachments Below</div>
         {{#each attachments}}
         <img src="{{this}}" alt="Attachment" style="width: 300px; margin-bottom: 10px;">
         {{/each}}
     </div>
     
-    <footer style="text-align: center; margin-top: 20px;">
-        <p>Hughes Job Sheet V_0.0.1</p>
+    <footer>
+        <p>Hughes Job Sheet</p>
+        <p style="margin-right: 3%;">V_0.0.1</p>
     </footer>
 </body>
 </html>

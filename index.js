@@ -235,27 +235,31 @@ app.listen(PORT, () => {
 });
 
 
-
+function getBase64Image(filePath) {
+    const file = fs.readFileSync(filePath);
+    return `data:image/png;base64,${file.toString("base64")}`;
+}
 
 async function generatePDF(data) {
-    try {
+    try { 
         // Read the HTML template
-        const templateHtml = fs.readFileSync(path.join(__dirname, "template.html"), "utf8");
+        const templateHtml = fs.readFileSync(path.join(__dirname, "Risk_Assesment2.html"), "utf8");
 
         // Compile the template with Handlebars
         const template = Handlebars.compile(templateHtml);
         const compiledHtml = template(data);
 
+
         // Launch Puppeteer
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 
-        // Set the compiled HTML
-        await page.setContent(compiledHtml, { waitUntil: "domcontentloaded" });
+        // Set the compiled HTML content
+        await page.setContent(compiledHtml, { waitUntil: "networkidle0" });
 
-        // Generate PDF
+        // Generate the PDF
         await page.pdf({
-            path: "jobsheet.pdf",
+            path: data.filename,
             format: "A4",
             printBackground: true,
         });
@@ -269,7 +273,8 @@ async function generatePDF(data) {
 
 // Dynamic data with multiple attachments
 const data = {
-    logo: "hughes_logo.png",
+    filename :"SUB421452-JOB_SHEET.pdf",
+    logoBase64: getBase64Image(path.resolve(__dirname, "hughes_logo.png")),
     customerName: "Yogesh",
     engineerName: "Chris White",
     latLong: "53.4510847, -2.0404963 - 223",
@@ -286,13 +291,34 @@ const data = {
     customerSignature: {
         name: "Audra",
         position: "Assistant",
-        signature: "signature_image.png",
+        signature: "https://onlinepngtools.com/images/examples-onlinepngtools/george-walker-bush-signature.png",
         date: "08/11/2024",
     },
+    parts: [
+        {
+            partUsed : "Antena",
+            serialNumber : "SVMBJS54986416",
+            macAddress : "mac549545258464",
+            item : "Antena new ",
+        },
+        {
+            partUsed : "Antena",
+            serialNumber : "SVMBJS54986416",
+            macAddress : "mac549545258464",
+            item : "Antena new ",
+        },
+        {
+            partUsed : "Antena",
+            serialNumber : "SVMBJS54986416",
+            macAddress : "mac549545258464",
+            item : "Antena new ",
+        },
+    ],
     attachments: [
-        "attachment1.png",
-        "attachment2.png",
-        "attachment3.png",
+        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg"
     ],
 };
 
