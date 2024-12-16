@@ -74,12 +74,9 @@ const demoUser = new User({
     status: 'active',
   });
 
-
-
-
   async function addDemoUser() {
     try {
-      const hashedPassword = await bcrypt.hash('securepassword123', 10); // Hash password with a salt factor of 10
+      const hashedPassword = await bcrypt.hash('securepassword123', 10);
   
       const demoUser = new User({
         email: 'o.yogeshoza@deaninfotech.com',
@@ -89,20 +86,21 @@ const demoUser = new User({
         status: 'active',
       });
   
-      await demoUser.save(); // Save the record to the database
+      await demoUser.save();
       console.log('Demo user added successfully with encrypted password!');
     } catch (err) {
       console.error('Error adding demo user:', err);
     } finally {
-      mongoose.connection.close(); // Close the connection after saving
+      mongoose.connection.close();
     }
   }
 
 //   addDemoUser();
 // Endpoint for Kezeo webhook
+
 app.post('/webhook', async (req, res) => {
     const eventData = req.body;
-
+    
     console.log('Received Webhook Data:', eventData);
 
     try {
@@ -288,7 +286,7 @@ function getBase64Image(filePath) {
 async function generatePDF(data) {
     try { 
         // Read the HTML template
-        const templateHtml = fs.readFileSync(path.join(__dirname, "./templates/job_sheet_template.html"), "utf8");
+        const templateHtml = fs.readFileSync(path.join(__dirname, "./templates/vehicle_checklist_template.html"), "utf8");
 
         // Compile the template with Handlebars
         const template = Handlebars.compile(templateHtml);
@@ -317,59 +315,59 @@ async function generatePDF(data) {
 }
 
 //JOB_sheet Data
-const data = {
-    filename :"SUB421452_JOB_SHEET.pdf",
-    logo: getBase64Image(path.resolve(__dirname, "./assests/hughes_logo.png")),
-    customerName: "Yogesh oza",
-    engineerName: "Chris White",
-    latLong: "53.4510847, -2.0404963 - 223",
-    siteAddress: "One Shop, 45 Hattersley Road West, SK14 3HE, Hattersley, United Kingdom",
-    siteCode: "47060101",
-    jobType: "RE-POINT",
-    san: "CMW12571",
-    orderNumber: "N/A",
-    arrivalTime: "09:20",
-    sjn: "N/A",
-    accessEquipment: "Telescopic ladder",
-    departureTime: "10:47",
-    description: "Repointed edge antenna from EB to W2a as requested. New SAN - CMW01155 pfcB. Site online and trading.",
-    customerSignature: {
-        name: "Audra",
-        position: "Assistant",
-        signature: "https://onlinepngtools.com/images/examples-onlinepngtools/george-walker-bush-signature.png",
-        date: "08/11/2024",
-    },
-    parts: [
-        {
-            partUsed : "Antena",
-            serialNumber : "SVMBJS54986416",
-            macAddress : "mac549545258464",
-            item : "Antena new ",
-        },
-        {
-            partUsed : "Antena",
-            serialNumber : "SVMBJS54986416",
-            macAddress : "mac549545258464",
-            item : "Antena new ",
-        },
-        {
-            partUsed : "Antena",
-            serialNumber : "SVMBJS54986416",
-            macAddress : "mac549545258464",
-            item : "Antena new ",
-        },
-    ],
-    attachments: [
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-        "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg"
-    ],
-};
+// const data = {
+//     filename :"SUB421452_JOB_SHEET.pdf",
+//     logo: getBase64Image(path.resolve(__dirname, "./assests/hughes_logo.png")),
+//     customerName: "Yogesh oza",
+//     engineerName: "Chris White",
+//     latLong: "53.4510847, -2.0404963 - 223",
+//     siteAddress: "One Shop, 45 Hattersley Road West, SK14 3HE, Hattersley, United Kingdom",
+//     siteCode: "47060101",
+//     jobType: "RE-POINT",
+//     san: "CMW12571",
+//     orderNumber: "N/A",
+//     arrivalTime: "09:20",
+//     sjn: "N/A",
+//     accessEquipment: "Telescopic ladder",
+//     departureTime: "10:47",
+//     description: "Repointed edge antenna from EB to W2a as requested. New SAN - CMW01155 pfcB. Site online and trading.",
+//     customerSignature: {
+//         name: "Audra",
+//         position: "Assistant",
+//         signature: "https://onlinepngtools.com/images/examples-onlinepngtools/george-walker-bush-signature.png",
+//         date: "08/11/2024",
+//     },
+//     parts: [
+//         {
+//             partUsed : "Antena",
+//             serialNumber : "SVMBJS54986416",
+//             macAddress : "mac549545258464",
+//             item : "Antena new ",
+//         },
+//         {
+//             partUsed : "Antena",
+//             serialNumber : "SVMBJS54986416",
+//             macAddress : "mac549545258464",
+//             item : "Antena new ",
+//         },
+//         {
+//             partUsed : "Antena",
+//             serialNumber : "SVMBJS54986416",
+//             macAddress : "mac549545258464",
+//             item : "Antena new ",
+//         },
+//     ],
+//     attachments: [
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+//         "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg"
+//     ],
+// };
 
 //Rish_Assessment_Sheet Data
 // const data = {
@@ -428,53 +426,52 @@ const data = {
 // };
 
 //vehicle_checklist_V0.1-1-4 Data
-// const data= {
-//     filename :"vehicle_checklist_V0.1-1-4.pdf",
-//     "logo1": getBase64Image(path.resolve(__dirname, "hughes_logo.png")),
-//     "logo2": getBase64Image(path.resolve(__dirname, "field_service_logo.png")),
-//     "title": "Hughes Weekly Vehicle Checklist",
-//     "date": "18/11/2024",
-//     "time": "08:39",
-//     "mileage": "24004",
-//     "vehicle": "Vauxhall Vivaro",
-//     "registration": "DP23 LZL",
-//     "checkedBy": "Adam Flatley",
-//     "signature": "https://onlinepngtools.com/images/examples-onlinepngtools/george-walker-bush-signature.png",
-//     "checklist": [
-//         { "item": "Safety Belts", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Brakes / Steering", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Engine (No Noises)", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Gears", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Heater / Air Conditioning", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Wipers", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Mirrors", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Headlights: High Beam", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Low Beam", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Indicators/Hazards", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Brake Lights / Tail Lights", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Doors/Locks", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Windows / Windscreen", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Horn", "status": "OK", "remarks": "", "special": true },
-//         { "item": "", "status": "", "remarks": "" ,"special": true },
-//         { "item": "Tires - Tread/Condition", "status": "OK", "remarks": "", "special": true },
-//         { "item": "Proper Inflation", "status": "OK", "remarks": "" },
-//         { "item": "Dash Cam - Working", "status": "YES", "remarks": "", "special": true },
-//         { "item": "Fire Extinguisher", "status": "OK", "remarks": "", "special": true },
-//         { "item": "First Aid Kit", "status": "IN DATE", "remarks": "", "special": true },
-//         { "item": "Liquids Level Check:", "status": "", "remarks": "" },
-//         { "item": "Oil", "status": "FULL", "remarks": "", "special": true },
-//         { "item": "Coolant", "status": "FULL", "remarks": "" },
-//         { "item": "Window Washer", "status": "OK", "remarks": "", "special": true },
-//         { "item": "General Clean & Tidiness", "status": "YES", "remarks": "" },
-//     ],
-//     "attachments": [
-//       "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-//       "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-//       "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-//       "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
-//     ]
-//   }
-
+const data= {
+    filename :"vehicle_checklist_V0.1-1-4.pdf",
+    "logo1": getBase64Image(path.resolve(__dirname, "./assests/hughes_logo.png")),
+    "logo2": getBase64Image(path.resolve(__dirname, "./assests/field_service_logo.png")),
+    "title": "Hughes Weekly Vehicle Checklist",
+    "date": "18/11/2024",
+    "time": "08:39",
+    "mileage": "24004",
+    "vehicle": "Vauxhall Vivaro",
+    "registration": "DP23 LZL",
+    "checkedBy": "Adam Flatley",
+    "signature": "https://onlinepngtools.com/images/examples-onlinepngtools/george-walker-bush-signature.png",
+    "checklist": [
+        { "item": "Safety Belts", "status": "OK", "remarks": "", "special": true },
+        { "item": "Brakes / Steering", "status": "OK", "remarks": "", "special": true },
+        { "item": "Engine (No Noises)", "status": "OK", "remarks": "", "special": true },
+        { "item": "Gears", "status": "OK", "remarks": "", "special": true },
+        { "item": "Heater / Air Conditioning", "status": "OK", "remarks": "", "special": true },
+        { "item": "Wipers", "status": "OK", "remarks": "", "special": true },
+        { "item": "Mirrors", "status": "OK", "remarks": "", "special": true },
+        { "item": "Headlights: High Beam", "status": "OK", "remarks": "", "special": true },
+        { "item": "Low Beam", "status": "OK", "remarks": "", "special": true },
+        { "item": "Indicators/Hazards", "status": "OK", "remarks": "", "special": true },
+        { "item": "Brake Lights / Tail Lights", "status": "OK", "remarks": "", "special": true },
+        { "item": "Doors/Locks", "status": "OK", "remarks": "", "special": true },
+        { "item": "Windows / Windscreen", "status": "OK", "remarks": "", "special": true },
+        { "item": "Horn", "status": "OK", "remarks": "", "special": true },
+        { "item": "", "status": "", "remarks": "" ,"special": true },
+        { "item": "Tires - Tread/Condition", "status": "OK", "remarks": "", "special": true },
+        { "item": "Proper Inflation", "status": "OK", "remarks": "" },
+        { "item": "Dash Cam - Working", "status": "YES", "remarks": "", "special": true },
+        { "item": "Fire Extinguisher", "status": "OK", "remarks": "", "special": true },
+        { "item": "First Aid Kit", "status": "IN DATE", "remarks": "", "special": true },
+        { "item": "Liquids Level Check:", "status": "", "remarks": "" },
+        { "item": "Oil", "status": "FULL", "remarks": "", "special": true },
+        { "item": "Coolant", "status": "FULL", "remarks": "" },
+        { "item": "Window Washer", "status": "OK", "remarks": "", "special": true },
+        { "item": "General Clean & Tidiness", "status": "YES", "remarks": "" },
+    ],
+    "attachments": [
+      "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2022/10/YJ/LT/WG/703975/amsler-lycra-attachment-spare-parts.jpg",
+    ]
+  }
 
 // Generate PDF
 generatePDF(data);
