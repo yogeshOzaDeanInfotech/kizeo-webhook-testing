@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Risk Assessment</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+            background: #fff;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .a4-container {
+            width: 210mm;
+            height: 297mm;
+            border: 1px solid #ddd;
+            padding: 20mm;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .header img {
+            height: 60px;
+        }
+
+        /* Main Content */
+        .content {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .content h1, .content h2 {
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .content h1 {
+            font-size: 28px;
+        }
+
+        .content h2 {
+            font-size: 24px;
+        }
+
+        .content ol {
+            text-align: left;
+            margin: 30px auto;
+            font-size: 18px;
+            font-weight:bolder;
+            width: 70%;
+        }
+
+        .content ol li {
+            margin: 25px 0;
+        }
+
+        /* Footer Styling */
+        .footer {
+            position: absolute;
+            bottom: 7%;
+            width: 100%;
+            left: 2%;
+
+        }
+
+        .footer span {
+            color: #36b0c3; /* Green Highlight */
+        }
+
+        .version {
+            font-size: 16px;
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            color: #444;
+        }
+        header .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    border-bottom: 2px solid #ccc;
+}
+
+.header h3 {
+    margin: 0;
+}
+
+.company-name h1 {
+    color: #0049b0;
+    font-size: 28px;
+}
+
+span {
+    color: #666;
+}
+
+section.title {
+    text-align: center;
+    margin: 20px 0;
+}
+
+
+.title p {
+    font-weight: bold;
+    color: #555;
+}
+
+.job-details p {
+    margin: 5px 30px;
+}
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 1px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .left, .right {
+            width: 48%;
+        }
+
+        .left {
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 20px;
+            height: 60px;
+            border-bottom: 2px solid #000;
+            width: 200px;
+        }
+
+
+table td:nth-child(3), table td:nth-child(4), table td:nth-child(5) {
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <div class="a4-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="./field_service_logo.png" alt="Field Service Logo">
+            <img src="./hughes_logo.png" alt="Hughes Europe Logo">
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <h1>Daily Site Specific Risk</h1>
+            <h1>Assessment &</h1>
+            <h1>Permit to Work</h1>
+            <ol>
+                <li>GENERAL INSTALLATION WORKS</li>
+                <li>USING LADDERS SHORT DURATION</li>
+                <li>HUGHES PETROL STATION FORECOURTS/SHOPS</li>
+            </ol>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <img src="./succeeding.png" alt="Field Service Logo">
+        </div>
+
+        <div class="version">Hughes RA_&_PW V_0.0.1</div>
+    </div>
+
+
+    <div class="a4-container">
+           <!-- Header -->
+        <div class="header">
+            <img src="./field_service_logo.png" alt="Field Service Logo">
+            <img src="./hughes_logo.png" alt="Hughes Europe Logo">
+        </div>
+
+        <section >
+            <h2 style="font-size: 16px;">DAILY SITE SPECIFIC RISK ASSESSMENT AND PERMIT TO WORK</h2>
+            <h3>GENERAL INSTALLATION WORKS</h3>
+            <p><strong><em>To be Completed for Every Job</em></strong></p>
+        </section>
+    
+        <section class="job-details">
+            <p><strong>SITE:</strong> paukq03 <strong>SUB:</strong> Order Number ORD0030276 <strong>Date:</strong> 13/11/2024</p>
+            <p><strong>JOB ADDRESS:</strong></p>
+            <p>22 Penny Brookes Street<br>
+            E15 1DN<br>
+            United Kingdom</p>
+            <p><strong>ENGINEER NAME/S:</strong> Georgi, Tashev</p>
+        </section>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>YES</th>
+                    <th>NO</th>
+                    <th>N/A</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>All works to comply with Installation guide / manual</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        Only competent trained experienced personnel to operate plant and install customer/client equipment.<br>
+                        <em>I have surveyed this job & I can complete the job safely. If I am unsure I will call my 
+                            supervisor/Line Manger I will not attempt a task/job I have not been trained for.</em>
+                    </td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        Liaise with building owner/occupier to agree existing hazards,<br>
+                        <ol>
+                            <li>Confirm with building owner/occupier, no works near asbestos containing materials.</li>
+                            <li>Confirm able to comply with building fire, emergency & security requirements.</li>
+                            <li>Confirm work schedule and location requirements.</li>
+                        </ol>
+                    </td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Provision made to minimise disturbance to building occupiers. Minimise noise & dust, general works.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td>All fire exit routes to be kept free from obstruction.</td>
+                    <td>☑</td><td>☐</td><td>☐</td>
+                </tr>
+                <!-- <tr>
+                    <td></td>
+                    <td><strong>Write details of risk that need to be controlled & how this will be achieved.</strong></td>
+                    <td>No</td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Signed by the senior person on site or attending engineer to verify that the risks assessment was carried out to identify all possible risks and that the crew understand the risks associated with the job before work is started.</td>
+                    <td><p><strong>Print Name:</strong> G.Tashev</p></td><td></td><td></td>
+                </tr> -->
+            </tbody>
+        </table>
+    
+        <footer>
+            <p></p>
+            <p></p>
+            <div class="signature">
+                Hughes RA_&_PW V_0.0.1
+            </div>
+        </footer>
+    </div>
+    <div class="a4-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://via.placeholder.com/80" alt="Hughes Logo">
+            <h1>HUGHES Europe</h1>
+        </div>
+
+        <!-- Date Section -->
+        <div class="row">
+            <div class="left bold">Date:</div>
+            <div class="right">13/11/2024</div>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="section">
+            <div class="left bold">Signed:</div>
+            <div class="signature"></div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="section">
+            <div class="left">
+                <p>2. Signed by the supervisor if their presence was requested by a crew member to confirm that any non-standard risks were resolved before work commenced.</p>
+            </div>
+
+            <div class="row">
+                <div class="left">
+                    <div class="bold">Signed:</div>
+                    <div class="signature"></div>
+                </div>
+                <div class="right">
+                    <p><span class="bold">Print Name:</span> G.Tashev</p>
+                    <p><span class="bold">Date:</span> 13/11/2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Hughes RA_&_PW V_0.0.1
+        </div>
+    </div>
+
+</body>
+</html>

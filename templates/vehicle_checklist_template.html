@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Checklist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid #000;
+      padding: 20px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .header img {
+      height: 60px;
+    }
+    .title {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-decoration: underline;
+    }
+    .details {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      margin-top: 20px;
+    }
+    .signature {
+      margin: 40px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      font-size: 12px;
+    }
+    th {
+      background-color: #f4f4f4;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    td {
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .attachments img {
+      width: 200px;
+      height: auto;
+      margin: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+      <img src="{{logo1}}" alt="Logo 1">
+      <img src="{{logo2}}" alt="Logo 2">
+    </div>
+
+    <div style="border-top: 2px solid #000; width: 92%; margin-left: 27px;"></div>
+
+    <div class="title">{{title}}</div>
+
+    <!-- Details Section -->
+    <div class="details">
+      <div>
+        <strong>Date:</strong> {{date}}, {{time}}<br>
+        <strong>Current Mileage:</strong> {{mileage}}
+      </div>
+      <div>
+        <strong>Vehicle:</strong> {{vehicle}}<br>
+        <strong>Registration No. of Vehicle:</strong> {{registration}}
+      </div>
+      <div>
+        <strong>Checked by:</strong> {{checkedBy}}
+      </div>
+    </div>
+
+    <!-- Signature Section -->
+    <div class="signature">
+      <strong>Signature:</strong>
+      <div style="margin-top: 10px;">
+        <img src="{{signature}}" alt="Supervisor Signature" width="91" height="auto" />
+      </div>
+    </div>
+
+    <!-- Checklist Table -->
+    <table>
+      <colgroup>
+        <col style="width: 25%;" />
+        <col style="width: 25%;" />
+        <col style="width: 50%;" />
+      </colgroup>
+      <tr>
+        <th>Item</th>
+        <th>Status</th>
+        <th>Remarks</th>
+      </tr>
+      {{#each checklist}}
+      <tr style="{{#if special}} height: 50px;{{/if}}">
+        <td style="{{#if special}}vertical-align: top;{{/if}}">{{item}}</td>
+        <td style="{{#if special}}vertical-align: top;{{/if}}">{{status}}</td>
+        <td style="{{#if special}}vertical-align: top;{{/if}}">{{remarks}}</td>
+      </tr>
+    {{/each}}
+    </table>
+
+    <!-- Attachments Section -->
+    <div class="attachments">
+      <h1 style="margin-top: 8%; font-size: 23px;">Attachments</h1>
+      {{#each attachments}}
+      <img src="{{this}}" alt="Attachment">
+      {{/each}}
+    </div>
+  </div>
+</body>
+</html>
