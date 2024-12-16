@@ -65,15 +65,6 @@ const DynamicData = mongoose.model('DynamicData', dynamicDataSchema);
 const Webhook = mongoose.model('Webhook', webhookSchema);
 const User = mongoose.model('User', userSchema);
 
-
-const demoUser = new User({
-    email: 'o.yogeshoza@deaninfotech.com',
-    password: '',
-    phone: '1234567890',
-    name: 'John Doe',
-    status: 'active',
-  });
-
   async function addDemoUser() {
     try {
       const hashedPassword = await bcrypt.hash('securepassword123', 10);
@@ -96,7 +87,6 @@ const demoUser = new User({
   }
 
 //   addDemoUser();
-// Endpoint for Kezeo webhook
 
 app.post('/webhook', async (req, res) => {
     const eventData = req.body;
@@ -179,61 +169,39 @@ app.post('/dynamic-webhook', async (req, res) => {
         await dynamicRecord.save();
         console.log('Dynamic Data Saved:', dynamicRecord);
 
-        // send data into pdf in service now 
+        res.status(200).send({ message: 'Dynamic data saved successfully', record: dynamicRecord });
+    } catch (error) {
+        console.error('Error saving dynamic data:', error);
+        res.status(500).send({ message: 'Internal Server Error', error });
+    }
+});
 
-        // Step 1: Extract relevant fields from the received data
-        const fields = requestData.data.fields;
-        const customerProject = fields.customer_project2?.result?.value?.code || 'N/A';
-        const engineerNames = fields.engineer_names?.result?.map((engineer) => engineer.value?.code).join(', ') || 'N/A';
-        const siteAddress = fields.site_address?.result?.value?.address || 'N/A';
-        const siteCity = fields.site_address?.result?.value?.city || 'N/A';
-        const siteCountry = fields.site_address?.result?.value?.country || 'N/A';
-        const subtaskNumber = fields.subtask_number?.result?.value || 'N/A';
-        const descriptionOfWork = fields.description_of_work?.result?.value || 'N/A';
-        const arrivalTime = fields.arrival_time?.result?.value?.hour || 'N/A';
-        const departureTime = fields.departure_time?.result?.value?.hour || 'N/A';
+// Endpoint to retrieve all dynamic data
+app.get('/dynamic-webhook', async (req, res) => {
+    try {
+        const records = await DynamicData.find();
+        console.log('Retrieved Dynamic Data:', records);
+        res.status(200).send(records);
+    } catch (error) {
+        console.error('Error retrieving dynamic data:', error);
+        res.status(500).send({ message: 'Internal Server Error', error });
+    }
+});
 
-        // Step 2: Create a PDF document
-        const doc = new PDFDocument();
-
-        // Ensure the directory exists before writing the PDF
-        const pdfDir = path.join(__dirname, 'generated_pdfs');
-        if (!fs.existsSync(pdfDir)) {
-            fs.mkdirSync(pdfDir, { recursive: true });
-        }
-
-        const pdfPath = path.join(pdfDir, 'generatedFile.pdf');
-        doc.pipe(fs.createWriteStream(pdfPath));
-
-        doc.fontSize(16).text('Dynamic Webhook Data', { align: 'center' });
-
-        doc.moveDown();
-        doc.fontSize(12).text(`Customer Project: ${customerProject}`);
-        doc.text(`Engineer Names: ${engineerNames}`);
-        doc.text(`Site Address: ${siteAddress}`);
-        doc.text(`City: ${siteCity}`);
-        doc.text(`Country: ${siteCountry}`);
-        doc.text(`Subtask Number: ${subtaskNumber}`);
-        doc.text(`Description of Work: ${descriptionOfWork}`);
-        doc.text(`Arrival Time: ${arrivalTime}`);
-        doc.text(`Departure Time: ${departureTime}`);
-
-        doc.end();
-
-        // Step 3: Upload the PDF to ServiceNow
-
+app.get('/send-pdf', async (req, res) => {
+    try {
         // Read the generated PDF file
-        const fileContent = fs.readFileSync(pdfPath);
+        const fileContent = fs.readFileSync("./vehicle_checklist_V0.1-1-4.pdf");
 
         // Prepare the form data for the file upload
         const formData = new FormData();
-        formData.append('file', fileContent, 'generatedFile.pdf');
+        formData.append('file', fileContent, 'vehicle_checklist_V0.1-1-4.pdf');
 
         // Parameters for the URL
         const params = {
             table_name: 'u_sub_task',
-            table_sys_id: '4af7cd431bd6d210a828a792b24bcb00',
-            file_name: 'generatedFile.pdf'
+            table_sys_id: '33e5ddb81b6a9a10192beb14b24bcb0e',
+            file_name: 'SUB0164647_vehicle_checklist_V0.1-1-4.pdf'
         };
 
         // Configure the API request to ServiceNow
@@ -248,26 +216,9 @@ app.post('/dynamic-webhook', async (req, res) => {
                 params: params
             }
         );
-
         console.log('ServiceNow Response:', response.data);
-       // end
-
-        res.status(200).send({ message: 'Dynamic data saved successfully', record: dynamicRecord });
+        res.status(200).send("Pdf uploaded to server successfully!!!");
     } catch (error) {
-        console.error('Error saving dynamic data:', error);
-        res.status(500).send({ message: 'Internal Server Error', error });
-    }
-});
-
-
-// Endpoint to retrieve all dynamic data
-app.get('/dynamic-webhook', async (req, res) => {
-    try {
-        const records = await DynamicData.find();
-        console.log('Retrieved Dynamic Data:', records);
-        res.status(200).send(records);
-    } catch (error) {
-        console.error('Error retrieving dynamic data:', error);
         res.status(500).send({ message: 'Internal Server Error', error });
     }
 });
@@ -276,7 +227,6 @@ app.get('/dynamic-webhook', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
 
 function getBase64Image(filePath) {
     const file = fs.readFileSync(filePath);
