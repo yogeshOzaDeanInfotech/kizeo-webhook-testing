@@ -423,7 +423,6 @@ const data= {
     ]
   }
 
-// Generate PDF
 generatePDF(data);
 
 
