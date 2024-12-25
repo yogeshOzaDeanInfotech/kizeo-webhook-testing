@@ -36,57 +36,15 @@ mongoose.connect(mongoDbUrl)
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Define a Mongoose schema with a flexible structure
-const webhookSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema({
     incidentNumber: { type: String, required: true },
-    payload: { type: Object, required: true },
+    job_details: { type: Object, required: true },
     createdAt: { type: Date, default: Date.now },
     sub_task_details: { type: Object }
 });
 
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true },
-    password: { type: String, required: true },
-    phone: { type: String, required: true },
-    name: { type: String, required: true },
-    status: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-});
-
-// Define a flexible schema for dynamic data
-const dynamicDataSchema = new mongoose.Schema({
-    data: { type: mongoose.Schema.Types.Mixed, required: true },
-    createdAt: { type: Date, default: Date.now },
-});
-
-// Create a model for dynamic data
-const DynamicData = mongoose.model('DynamicData', dynamicDataSchema);
-
 // Create a model
-const Webhook = mongoose.model('Webhook', webhookSchema);
-const User = mongoose.model('User', userSchema);
-
-  async function addDemoUser() {
-    try {
-      const hashedPassword = await bcrypt.hash('securepassword123', 10);
-  
-      const demoUser = new User({
-        email: 'o.yogeshoza@deaninfotech.com',
-        password: hashedPassword,
-        phone: '1234567890',
-        name: 'Yogesh Oza',
-        status: 'active',
-      });
-  
-      await demoUser.save();
-      console.log('Demo user added successfully with encrypted password!');
-    } catch (err) {
-      console.error('Error adding demo user:', err);
-    } finally {
-      mongoose.connection.close();
-    }
-  }
-
-//   addDemoUser();
+const Webhook = mongoose.model('job', jobSchema);
 
 app.post('/webhook', async (req, res) => {
     const eventData = req.body;
